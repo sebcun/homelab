@@ -73,14 +73,19 @@ def auth_callback():
     email = userinfo.get('email')
     nickname = userinfo.get('nickname') or userinfo.get('name')
     slack_id = userinfo.get('slack_id')
-    db.insert_user(email, nickname, slack_id)
+    user_id = db.insert_user(email, nickname, slack_id)
     session['user'] = nickname
+    session['id'] = user_id
+    session['slack_id'] = slack_id
     return redirect(url_for('dashboard'))
 
 @app.route('/dashboard')
 def dashboard():
+    print(session['slack_id'])
     if 'user' in session:
-        return render_template('dashboard.html', name=session['user'], config=config)
+        slack_id = session['slack_id']
+        hackatime_response = requests.get(f"https://hackatime.hackclub.com/api/v1/users/{slack_id}/stats?limit=1000&features=projects&start_date=2025-12-16").json()
+        return render_template('dashboard.html', name=session['user'], config=config, hackatime=hackatime_response)
     else:
         return redirect(url_for('login'))
 

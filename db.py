@@ -16,5 +16,7 @@ def insert_user(email, nickname, slack_id):
     conn = sqlite3.connect('users.db')
     c = conn.cursor()
     c.execute('INSERT OR IGNORE INTO users (email, nickname, slack_id) VALUES (?, ?, ?)', (email, nickname, slack_id))
+    user_id = c.lastrowid
     conn.commit()
     conn.close()
+    return user_id
