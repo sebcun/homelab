@@ -112,6 +112,10 @@ def edit_project():
     if 'user' not in session:
         return redirect(url_for('login'))
     project_id = request.form.get('project_id')
+    if not project_id:
+        return "Error: No project ID", 400
+    if not db.check_project_owner(project_id, session['id']):
+        return "Error: Unauthorized to edit this project", 403
     title = request.form.get('title')
     description = request.form.get('description')
     demo_link = request.form.get('demoLink')
