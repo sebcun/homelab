@@ -424,3 +424,44 @@ body {
     font-size: 1.5rem;
   }
 }
+
+.stats-container {
+  display: flex;
+  gap: 2rem;
+  padding: 0 2rem;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background: rgba(var(--background-secondary-rgb), 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 2px solid rgba(var(--primary-rgb), 0.2);
+  min-width: 200px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  border-color: var(--primary);
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.project-author {
+  margin-bottom: 0.5rem;
+}
+
+.modal-content input[readonly],
+.modal-content textarea[readonly] {
+  background: rgba(var(--background-dark-rgb), 0.8);
+  border-color: rgba(var(--primary-rgb), 0.1);
+  cursor: not-allowed;
+}

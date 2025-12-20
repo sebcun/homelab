@@ -103,9 +103,34 @@ def dashboard():
         for proj in projects:
             hours = next((hp.get('text', '0') for hp in hackatime_projects if hp.get('name') == proj[5]), '0')
             projects_with_hours.append(proj + (hours,))
-        return render_template('dashboard.html', name=session['user'], config=config, hackatime=hackatime_response, projects=projects_with_hours)
+        
+        # Check if user is an organiser
+        orgs_env = os.getenv('ORGS')
+        is_organiser = False
+        if orgs_env:
+            org_slack_ids = [id.strip() for id in orgs_env.split(',')]
+            is_organiser = slack_id in org_slack_ids
+        
+        return render_template('dashboard.html', name=session['user'], config=config, hackatime=hackatime_response, projects=projects_with_hours, is_organiser=is_organiser)
     else:
         return redirect(url_for('login'))
+
+@app.route('/organiser')
+def organiser():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    
+    orgs_env = os.getenv('ORGS')
+    if not orgs_env:
+        return "Access denied", 403
+    
+    org_slack_ids = [id.strip() for id in orgs_env.split(',')]
+    if session['slack_id'] not in org_slack_ids:
+        return "Access denied", 403
+    
+    total_projects = db.count_all_projects()
+    all_projects = db.get_all_projects()
+    return render_template('organiser.html', name=session['user'], config=config, total_projects=total_projects, all_projects=all_projects, is_organiser=True)
 
 @app.route('/edit_project', methods=['POST'])
 def edit_project():
@@ -149,6 +174,26 @@ def create_project():
     db.insert_project(user_id, title, description, demo_link, github_link, hackatime_project)
     return redirect(url_for('dashboard'))
 
+@app.route('/organiser_delete_project', methods=['POST'])
+def organiser_delete_project():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    
+    orgs_env = os.getenv('ORGS')
+    if not orgs_env:
+        return "Access denied", 403
+    
+    org_slack_ids = [id.strip() for id in orgs_env.split(',')]
+    if session['slack_id'] not in org_slack_ids:
+        return "Access denied", 403
+    
+    project_id = request.form.get('project_id')
+    if not project_id:
+        return "Error: No project ID", 400
+    
+    db.delete_project(project_id)
+    return redirect(url_for('organiser'))
+
 @app.route('/badbad')
 def badbad():
     return "You are not YSWS eligible to access this."
@@ -161,4 +206,4 @@ def logout():
 if __name__ == '__main__':
     import os
     port = int(os.environ.get("PORT", 8000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=config.get('debug', False))

@@ -73,3 +73,24 @@ def delete_project(project_id):
     c.execute('DELETE FROM projects WHERE id = ?', (project_id,))
     conn.commit()
     conn.close()
+
+def count_all_projects():
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute('SELECT COUNT(*) FROM projects')
+    count = c.fetchone()[0]
+    conn.close()
+    return count
+
+def get_all_projects():
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute('''
+        SELECT p.id, p.title, p.description, p.demo_link, p.github_link, p.hackatime_project, p.status, p.created_at, u.nickname, u.slack_id
+        FROM projects p
+        JOIN users u ON p.user_id = u.id
+        ORDER BY p.created_at DESC
+    ''')
+    projects = c.fetchall()
+    conn.close()
+    return projects

@@ -38,13 +38,16 @@
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/dashboard">Dashboard</a></li>
+        {% if is_organiser %}
+        <li><a href="/organiser">Organiser</a></li>
+        {% endif %}
         <li><a href="/logout">Logout</a></li>
       </ul>
     </nav>
 
     <main class="dashboard-content">
       <header class="dashboard-header">
-        <h1>Welcome to {{ config.home.title }}, {{ name }}!</h1>
+        <h1>{{ config.home.title }} Dashboard</h1>
         <p>Track your projects and manage your orders.</p>
       </header>
 
