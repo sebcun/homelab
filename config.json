@@ -1,5 +1,6 @@
 {
   "mode": "active",
+  "debug": true,
   "rsvp": "https://forms.fillout.com/t/",
   "github": "https://github.com/sebcun/homelab",
   "home": {
