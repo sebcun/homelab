@@ -1,0 +1,328 @@
+{% extends "base.html" %} {% block title %} YSWS-Template {% endblock %} {%
+block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/dashboard.css') }}"
+/>
+{% endblock %}{% block hackclub_flag %} {% endblock %}{% block navbar_balance %}
+0h {% endblock %} {% block content %}
+
+<div class="container py-5 vh-100">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Projects</h1>
+    <button class="btn btn-primary">
+      <i class="bi bi-plus-lg me-2"></i>Create Project
+    </button>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div class="col">
+      <div class="card h-100 shadow border-0 rounded-3">
+        <div class="p-2">
+          <img
+            src="https://m.media-amazon.com/images/I/518LvVkg77L._AC_SL1280_.jpg"
+            class="card-img-top rounded-top-3"
+            alt="Project Image"
+            style="height: 160px; object-fit: contain"
+          />
+        </div>
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h5 class="card-title mb-0 text-truncate">Project</h5>
+            <span class="badge bg-success">SHIPPED</span>
+          </div>
+          <p class="card-text text-truncate">Description Here.</p>
+          <div
+            class="d-flex justify-content-between align-items-center mt-auto"
+          >
+            <h6 class="text-muted mb-0">0h</h6>
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#projectModal"
+            >
+              View Project
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100 shadow border-0 rounded-3">
+        <div class="p-2">
+          <img
+            src="https://m.media-amazon.com/images/I/518LvVkg77L._AC_SL1280_.jpg"
+            class="card-img-top rounded-top-3"
+            alt="Project Image"
+            style="height: 160px; object-fit: contain"
+          />
+        </div>
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h5 class="card-title mb-0 text-truncate">Project</h5>
+            <span class="badge bg-warning text-dark">BUILDING</span>
+          </div>
+          <p class="card-text text-truncate">description.</p>
+          <div
+            class="d-flex justify-content-between align-items-center mt-auto"
+          >
+            <h6 class="text-muted mb-0">0h</h6>
+            <a href="#" class="btn btn-outline-primary btn-sm">View Project</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100 shadow border-0 rounded-3">
+        <div class="p-2">
+          <img
+            src="https://m.media-amazon.com/images/I/518LvVkg77L._AC_SL1280_.jpg"
+            class="card-img-top rounded-top-3"
+            alt="Project Image"
+            style="height: 160px; object-fit: contain"
+          />
+        </div>
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h5 class="card-title mb-0 text-truncate">Project</h5>
+            <span class="badge bg-info text-dark">PENDING</span>
+          </div>
+          <p class="card-text text-truncate">Description</p>
+          <div
+            class="d-flex justify-content-between align-items-center mt-auto"
+          >
+            <h6 class="text-muted mb-0">0h</h6>
+            <a href="#" class="btn btn-outline-primary btn-sm">View Project</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="projectModal"
+  tabindex="-1"
+  aria-labelledby="projectModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content overflow-hidden border-0 shadow">
+      <div class="position-relative">
+        <img
+          src="https://m.media-amazon.com/images/I/518LvVkg77L._AC_SL1280_.jpg"
+          class="w-100 project-modal-img"
+          alt="Project Header"
+        />
+        <button
+          type="button"
+          class="btn-close position-absolute top-0 end-0 m-3 project-modal-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="modal-title fw-bold mb-0" id="projectModalLabel">
+            Project
+          </h2>
+          <div class="d-flex align-items-center gap-2">
+            <span class="fw-bold fs-5">0h</span>
+            <span class="badge bg-success">SHIPPED</span>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <h5 class="fw-bold">Description</h5>
+          <p class="text-muted">Description Here.</p>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label fw-bold">Hackatime Projects</label>
+          <div class="dropdown">
+            <button
+              class="btn custom-dropdown-btn w-100 text-start d-flex justify-content-between align-items-center"
+              type="button"
+              id="hackatimeDropdown"
+              data-bs-toggle="dropdown"
+              data-bs-auto-close="outside"
+              aria-expanded="false"
+            >
+              <span id="selectedProjectsText" class="text-muted"
+                >Select projects...</span
+              >
+              <i class="bi bi-chevron-down"></i>
+            </button>
+            <ul class="dropdown-menu w-100" aria-labelledby="hackatimeDropdown">
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><div class="form-check">
+                    <input
+                      class="form-check-input hackatime-checkbox"
+                      type="checkbox"
+                      value="1"
+                      id="project1"
+                    /><label class="form-check-label w-100" for="project1">1</label>
+                  </div></a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><div class="form-check">
+                    <input
+                      class="form-check-input hackatime-checkbox"
+                      type="checkbox"
+                      value="2"
+                      id="project2"
+                    /><label class="form-check-label w-100" for="project2">2</label>
+                  </div></a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><div class="form-check">
+                    <input
+                      class="form-check-input hackatime-checkbox"
+                      type="checkbox"
+                      value="3"
+                      id="project3"
+                    /><label class="form-check-label w-100" for="project3">3</label>
+                  </div></a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><div class="form-check">
+                    <input
+                      class="form-check-input hackatime-checkbox"
+                      type="checkbox"
+                      value="4"
+                      id="project4"
+                    /><label class="form-check-label w-100" for="project4">4</label>
+                  </div></a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><div class="form-check">
+                    <input
+                      class="form-check-input hackatime-checkbox"
+                      type="checkbox"
+                      value="5"
+                      id="project5"
+                    /><label class="form-check-label w-100" for="project5">5</label>
+                  </div></a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><div class="form-check">
+                    <input
+                      class="form-check-input hackatime-checkbox"
+                      type="checkbox"
+                      value="6"
+                      id="project6"
+                    /><label class="form-check-label w-100" for="project6">6</label>
+                  </div></a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><div class="form-check">
+                    <input
+                      class="form-check-input hackatime-checkbox"
+                      type="checkbox"
+                      value="7"
+                      id="project7"
+                    /><label class="form-check-label w-100" for="project7">7</label>
+                  </div></a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <h5 class="fw-bold mb-3">Links</h5>
+          <div class="d-flex gap-3 flex-column flex-md-row">
+            <div class="input-group">
+              <span class="input-group-text input-group-text-modern"
+                ><i class="bi bi-github"></i
+              ></span>
+              <input
+                type="text"
+                class="form-control form-control-modern group-end"
+                placeholder="Github Link"
+                value="https://github.com"
+                readonly
+              />
+            </div>
+            <div class="input-group">
+              <span class="input-group-text input-group-text-modern"
+                ><i class="bi bi-link-45deg"></i
+              ></span>
+              <input
+                type="text"
+                class="form-control form-control-modern group-end"
+                placeholder="Demo Link"
+                value="https://demo.com"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-5">
+          <button type="button" class="btn btn-danger">Delete</button>
+          <button type="button" class="btn btn-secondary">Edit</button>
+          <button type="button" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="py-4 bg-light text-center">
+  <div class="container">
+    <span class="text-muted"
+      >This website is <a href="https://github.com">Open source!</a></span
+    >
+  </div>
+</footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const checkboxes = document.querySelectorAll(".hackatime-checkbox");
+    const selectedText = document.getElementById("selectedProjectsText");
+
+    function updateSelectedText() {
+      const selected = Array.from(checkboxes)
+        .filter((cb) => cb.checked)
+        .map((cb) => cb.value);
+
+      if (selected.length === 0) {
+        selectedText.textContent = "Select projects...";
+        selectedText.classList.add("text-muted");
+      } else {
+        selectedText.textContent = selected.join(", ");
+        selectedText.classList.remove("text-muted");
+      }
+    }
+
+    checkboxes.forEach((cb) => {
+      cb.addEventListener("change", updateSelectedText);
+      cb.closest(".dropdown-item").addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (e.target !== cb) {
+          cb.checked = !cb.checked;
+          updateSelectedText();
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}
