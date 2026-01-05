@@ -4,6 +4,23 @@ block head %}
   rel="stylesheet"
   href="{{ url_for('static', filename='css/dashboard.css') }}"
 />
+<style>
+  .fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .form-check-input:checked + .form-check-label {
+    text-decoration: line-through;
+    color: #6c757d;
+  }
+</style>
 {% endblock %}{% block hackclub_flag %} {% endblock %}{% block navbar_balance %}
 0h {% endblock %} {% block content %}
 
@@ -343,6 +360,108 @@ Description Here.</textarea
   </div>
 </div>
 
+<div
+  class="modal fade"
+  id="submitChecklistModal"
+  tabindex="-1"
+  aria-labelledby="submitChecklistModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow border-0 rounded-3">
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold" id="submitChecklistModalLabel">
+          Submit Project
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-check mb-3">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="checkHours"
+            checked
+            disabled
+          />
+          <label class="form-check-label" for="checkHours">
+            Worked on this project for at least 3 hours
+          </label>
+        </div>
+        <div class="form-check mb-3">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="checkDemo"
+          />
+          <label class="form-check-label" for="checkDemo">
+            A working demo link
+          </label>
+        </div>
+        <div class="form-check mb-3">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="checkReadme"
+          />
+          <label class="form-check-label" for="checkReadme">
+            A readme on the Git repo that is not written by AI
+          </label>
+        </div>
+        <div class="form-check mb-3">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="checkBanner"
+            checked
+            disabled
+          />
+          <label class="form-check-label" for="checkBanner">
+            A banner image for the project has been uploaded
+          </label>
+        </div>
+        <div class="form-check mb-3">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="checkShippable"
+          />
+          <label class="form-check-label" for="checkShippable">
+            The project is in a working, shippable state
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer border-0">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-dismiss="modal"
+        >
+          Nevermind
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          id="finalSubmitBtn"
+          disabled
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer class="py-4 bg-light text-center">
   <div class="container">
     <span class="text-muted"
@@ -383,6 +502,7 @@ Description Here.</textarea
 
     const editBtn = document.getElementById("editBtn");
     const saveBtn = document.getElementById("saveBtn");
+    const submitBtn = document.getElementById("submitBtn");
     const viewElements = document.querySelectorAll(".view-element");
     const editElements = document.querySelectorAll(".edit-element");
     const linkInputs = document.querySelectorAll(".link-input");
@@ -401,6 +521,40 @@ Description Here.</textarea
       titleText.textContent = titleInput.value;
       descText.textContent = descInput.value;
       toggleEdit(false);
+    });
+
+    const submitChecklistModalEl = document.getElementById(
+      "submitChecklistModal"
+    );
+    const submitChecklistModal = new bootstrap.Modal(submitChecklistModalEl);
+
+    submitBtn.addEventListener("click", () => {
+      submitChecklistModal.show();
+    });
+
+    submitChecklistModalEl.addEventListener("show.bs.modal", function () {
+      const zIndex = 1060;
+      this.style.zIndex = zIndex;
+      setTimeout(() => {
+        const backdrops = document.querySelectorAll(".modal-backdrop");
+        if (backdrops.length > 1) {
+          const lastBackdrop = backdrops[backdrops.length - 1];
+          lastBackdrop.style.zIndex = zIndex - 1;
+        }
+      }, 0);
+    });
+
+    const checklistItems =
+      submitChecklistModalEl.querySelectorAll(".form-check-input");
+    const finalSubmitBtn = document.getElementById("finalSubmitBtn");
+
+    function checkAllChecked() {
+      const allChecked = Array.from(checklistItems).every((cb) => cb.checked);
+      finalSubmitBtn.disabled = !allChecked;
+    }
+
+    checklistItems.forEach((cb) => {
+      cb.addEventListener("change", checkAllChecked);
     });
 
     function toggleEdit(isEdit) {

@@ -94,3 +94,8 @@
     opacity: 1;
   }
 }
+
+.form-check-input:checked + .form-check-label {
+  text-decoration: line-through;
+  color: #6c757d;
+}
