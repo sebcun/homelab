@@ -14,5 +14,9 @@ def dashboard():
 def admin():
     return render_template('admin.html')
 
+@app.route('/reviewer')
+def reviewer():
+    return render_template('reviewer.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

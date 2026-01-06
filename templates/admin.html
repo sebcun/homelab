@@ -5,26 +5,13 @@
   href="{{ url_for('static', filename='css/dashboard.css') }}"
 />
 <style>
-  .admin-card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .admin-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-  }
-  .delete-btn {
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-  .card:hover .delete-btn {
-    opacity: 1;
-  }
+
 </style>
 {% endblock %} {% block hackclub_flag %} {% endblock %} {% block navbar_balance
-%} Admin Panel {% endblock %} {% block content %}
-<div class="container py-5">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold">FAQs</h2>
+%}{% endblock %} {% block content %}
+<div class="container py-5 vh-100">
+  <div class="section-header">
+    <h2 class="section-title">FAQs</h2>
     <button
       class="btn btn-primary"
       data-bs-toggle="modal"
@@ -35,7 +22,6 @@
   </div>
 
   <div class="row row-cols-1 g-3 mb-5" id="faqList">
-    <!-- Example FAQ Item -->
     <div class="col">
       <div class="card shadow-sm border-0 rounded-3 admin-card">
         <div class="card-body">
@@ -82,10 +68,8 @@
     </div>
   </div>
 
-  <hr class="my-5 text-muted" />
-
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold">Rewards</h2>
+  <div class="section-header">
+    <h2 class="section-title">REWARDS</h2>
     <button
       class="btn btn-primary"
       data-bs-toggle="modal"
@@ -117,7 +101,7 @@
               class="btn btn-outline-danger btn-sm delete-btn"
               onclick="this.closest('.col').remove()"
             >
-              <i class="bi bi-trash me-1"></i>Remove
+              <i class="bi bi-trash me-1"></i>
             </button>
           </div>
         </div>
