@@ -35,9 +35,11 @@ const saveBtn = document.getElementById('saveBtn');
 const submitBtn = document.getElementById('submitBtn');
 const deleteBtn = document.getElementById('deleteBtn');
 const finalSubmitBtn = document.getElementById('finalSubmitBtn');
+const cancelEditBtn = document.getElementById('cancelEditBtn');
 
 const checkHours = document.getElementById('checkHours');
 const checkDemo = document.getElementById('checkDemo');
+const checkGithub = document.getElementById('checkGithub');
 const checkReadme = document.getElementById('checkReadme');
 const checkBanner = document.getElementById('checkBanner');
 const checkShippable = document.getElementById('checkShippable');
@@ -65,21 +67,22 @@ function formatHours(hours) {
   return '0h 0m';
 }
 
-function getDefaultImage() {
-  return 'https://via.placeholder.com/400x160?text=Project+Image';
-}
-
 async function loadProjects() {
-  const projectsResponse = await fetch('/api/projects');
-  const projectsData = await projectsResponse.json();
-  projects = projectsData.projects || [];
-  
-  const hackatimeResponse = await fetch('/api/hackatime');
-  const hackatimeData = await hackatimeResponse.json();
-  hackatimeProjects = hackatimeData?.data?.projects || [];
-  
-  renderProjects();
-  populateHackatimeDropdowns();
+  try {
+    const projectsResponse = await fetch('/api/projects');
+    const projectsData = await projectsResponse.json();
+    projects = projectsData.projects || [];
+    
+    const hackatimeResponse = await fetch('/api/hackatime');
+    const hackatimeData = await hackatimeResponse.json();
+    hackatimeProjects = hackatimeData?.data?.projects || [];
+    
+    renderProjects();
+    populateHackatimeDropdowns();
+  } catch (error) {
+    projectsGrid.innerHTML = '<div class="col-12 text-center py-5"><p class="text-danger">Failed to load projects. Please try again.</p></div>';
+    console.error('Failed to load projects:', error);
+  }
 }
 
 function populateHackatimeDropdowns() {
@@ -207,10 +210,15 @@ function openProjectModal(project) {
   setHackatimeProjects(hackatimeProject);
   toggleEditMode(false);
   
-  if (status === 'Building') {
+  if (status === 'Pending Review') {
+    submitBtn.style.display = 'none';
+    editBtn.style.display = 'none';
+  } else if (status === 'Building') {
     submitBtn.style.display = '';
+    editBtn.style.display = '';
   } else {
     submitBtn.style.display = 'none';
+    editBtn.style.display = '';
   }
   
   projectModal.show();
@@ -250,6 +258,8 @@ function toggleEditMode(edit) {
     demoInput.removeAttribute('readonly');
     hackatimeDropdown.removeAttribute('disabled');
     editBtn.style.display = 'none';
+    submitBtn.style.display = 'none';
+    cancelEditBtn.style.display = '';
     saveBtn.style.display = '';
   } else {
     projectTitleInput.style.display = 'none';
@@ -260,7 +270,12 @@ function toggleEditMode(edit) {
     demoInput.setAttribute('readonly', true);
     hackatimeDropdown.setAttribute('disabled', true);
     saveBtn.style.display = 'none';
+    cancelEditBtn.style.display = 'none';
     editBtn.style.display = '';
+    
+    if (currentProject && currentProject.status === 'Building') {
+      submitBtn.style.display = '';
+    }
   }
 }
 
@@ -391,7 +406,8 @@ function handleSubmitClick() {
   
   checkHours.checked = hours >= 3;
   checkDemo.checked = hasDemo;
-  checkReadme.checked = hasGithub;
+  checkGithub.checked = hasGithub;
+  checkReadme.checked = false;
   checkBanner.checked = true;
   checkShippable.checked = false;
   
@@ -425,7 +441,7 @@ async function handleFinalSubmit() {
 }
 
 function checkAllChecked() {
-  const allChecked = checkHours.checked && checkDemo.checked && checkReadme.checked && checkBanner.checked && checkShippable.checked;
+  const allChecked = checkHours.checked && checkDemo.checked && checkGithub.checked && checkReadme.checked && checkBanner.checked && checkShippable.checked;
   finalSubmitBtn.disabled = !allChecked;
 }
 
@@ -437,10 +453,16 @@ document.addEventListener('DOMContentLoaded', function() {
   
   createProjectTitle.addEventListener('input', validateCreateForm);
   createProjectDesc.addEventListener('input', validateCreateForm);
-  createGithubInput.addEventListener('input', validateCreateForm);
-  createDemoInput.addEventListener('input', validateCreateForm);
   
   editBtn.addEventListener('click', () => toggleEditMode(true));
+  cancelEditBtn.addEventListener('click', () => {
+    projectTitleInput.value = currentProject.title || 'Untitled Project';
+    projectDescInput.value = currentProject.description || 'No description';
+    githubInput.value = currentProject.github_link || '';
+    demoInput.value = currentProject.demo_link || '';
+    setHackatimeProjects(currentProject.hackatime_project || '');
+    toggleEditMode(false);
+  });
   saveBtn.addEventListener('click', handleSave);
   deleteBtn.addEventListener('click', handleDelete);
   submitBtn.addEventListener('click', handleSubmitClick);
@@ -448,6 +470,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   checkHours.addEventListener('change', checkAllChecked);
   checkDemo.addEventListener('change', checkAllChecked);
+  checkGithub.addEventListener('change', checkAllChecked);
   checkReadme.addEventListener('change', checkAllChecked);
   checkShippable.addEventListener('change', checkAllChecked);
   
