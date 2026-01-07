@@ -1,6 +1,6 @@
 {
   "mode": "active",
-  "debug": false,
+  "debug": true,
   "rsvp": "https://forms.fillout.com/t/",
   "github": "https://github.com/sebcun/homelab",
   "home": {
@@ -10,7 +10,7 @@
   "faqs": {
     "What is HomeLab?": "HomeLab is a Hack Club YSWS program where you ship projects related to having a self hosted server at home, and we ship things to help you create your own setup (or update a setup you already have!)",
     "When does it start and end?": "HomeLab has started already if you are reading this! Start tracking time. The deadline for projects to be submitted is the 31st of January 2026 11:59PM (EST).",
-    "What is classified as a home server related project?": "We are fairly open to this, however creating a random project that is \"hosted on a home server\" doesn't count. This means you can't build an unrelated website and just claim you can host it on a home server. Instead, ideas include a website that lets you automate tasks and processes on your network, a file explorer based on storage on a NAS, etc. You could also do a hardware project such as a 3d printed server rack.\nPlease note, setting up and hosting something including just editing a config does not count.",
+    "What is classified as a home server related project?": "We are fairly open to this, however creating a random project that is \"hosted on a home server\" doesn't count. This means you can't build an unrelated website and just claim you can host it on a home server. Instead, ideas include a website that lets you automate tasks and processes on your network, a file explorer based on storage on a NAS, etc. You could also do a hardware project such as a 3d printed server rack.",
     "How many projects can I make?": "You can make as many project as you would like, as well as contribute them all to your hour total to spend on rewards. Rewards pretty much work like a shop balance where your hours are you balance, and you can buy any amount of things.",
     "Are there any requirements for participating?": "You must be YSWS eligible (18 years or under) and a participant of Hack Club.",
     "Is HomeLab free?": "Yes! HomeLab is a Hack Club program and completely free to participate. Find out more at hackclub.com.",
@@ -21,137 +21,158 @@
   },
   "rewards": [
     {
-      "title": "HomeLab Grant",
-      "description": "Use on most things homelab related (ask in #home-lab)!",
+      "title": "Used Server Rack Grant",
+      "description": "No Limits!",
       "hours": 1,
-      "image": "assets/serverrack.png",
-      "link": "https://hackclub.enterprise.slack.com/archives/C09U5BFU3GA"
+      "image": "assets/serverack.png",
+      "link": "https://google.com"
     },
     {
-      "title": "5x CAT6 Cables",
-      "description": "3ft each, 10Gbps",
-      "hours": 3,
-      "image": "assets/cat6.png",
-      "link": "https://www.amazon.com/Cable-Matters-5-Pack-Snagless-Ethernet/dp/B00C2CBBAM"
+      "title": "3x CAT6 1m Cable",
+      "description": "you can never have enough!",
+      "hours": 1,
+      "image": "assets/Cat6.png",
+      "link": "https://google.com"
     },
     {
-      "title": "2x 32gb Flash Drive",
-      "description": "perfect to install server software on",
-      "hours": 3,
-      "image": "assets/fdives.png",
-      "link": "https://www.amazon.com/SamData-Drives-Memory-Storage-Backup/dp/B082ZGHXK8/"
-    },
-    {
-      "title": "Raspberry Pi Zero 2 W",
-      "description": "",
-      "hours": 7,
-      "image": "assets/rpiz2.png",
-      "link": "https://www.amazon.com/Raspberry-Zero-Bluetooth-RPi-2W/dp/B09LH5SBPS/"
-    },
-    {
-      "title": "TL-SG108 Network Switch",
-      "description": "",
-      "hours": 4,
-      "image": "assets/tl2g108.png",
-      "link": "https://www.amazon.com/TP-Link-Gigabit-Ethernet-Network-Switch/dp/B00A121WN6/"
+      "title": "32gb USB Flash Drive",
+      "description": "perfect for booting and installing OS!",
+      "hours": 2,
+      "image": "assets/32GB.png",
+      "link": "https://google.com"
     },
     {
       "title": "Cable Management Kit",
-      "description": "",
-      "hours": 4,
-      "image": "assets/bcmk.png",
-      "link": "https://www.amazon.com/Management-Organizer-Adhesive-Fastening-Electronics/dp/B09478CKG2/"
-    },
-    {
-      "title": "Crucial P510 PCIe Gen5 NVMe 1TB SSD",
-      "description": "",
-      "hours": 30,
-      "image": "assets/cp510sd.png",
-      "link": "https://www.amazon.com/Crucial-Internal-Compatible-Desktop-Software/dp/B0DZ5ZK225/"
-    },
-    {
-      "title": "2x Gigastone 512GB NAS SSD",
-      "description": "",
-      "hours": 30,
-      "image": "assets/gs512s.png",
-      "link": "https://www.amazon.com/Gigastone-Durable-Endurance-Attached-Internal/dp/B088TK2P15/"
-    },
-    {
-      "title": "Amazon Basics UPS Battery Backup & Surge Protector 400VA/255W",
-      "description": "",
-      "hours": 12,
-      "image": "assets/aups400va.png",
-      "link": "https://www.amazon.com/AmazonBasics-Standby-UPS-400VA-Outlets/dp/B073Q48Z95/"
-    },
-    {
-      "title": "Synology 2-Bay NAS DS223",
-      "description": "",
-      "hours": 60,
-      "image": "assets/syn2bn.png",
-      "link": "https://www.amazon.com/Synology-2-Bay-NAS-DS223-Diskless/dp/B0BRNBVTJK/"
-    },
-    {
-      "title": "Synology 4-Bay DiskStation DS925+",
-      "description": "",
-      "hours": 130,
-      "image": "assets/syn4bn.png",
-      "link": "https://www.amazon.com/Synology-4-Bay-DiskStation-DS925-Diskless/dp/B0C8S7SF4B/"
-    },
-    {
-      "title": "SSD Reader Docking Station",
-      "description": "",
-      "hours": 7,
-      "image": "assets/sdraoko.png",
-      "link": "https://www.amazon.com/AOKO-2-5-SATA-Converter-NVMe/dp/B0BDLZQCJY/"
-    },
-    {
-      "title": "128gb Micro SDXC Memory Card",
-      "description": "",
+      "description": "Keep your setup organized and clean",
       "hours": 3,
-      "image": "assets/128msdxab.png",
-      "link": "https://www.amazon.com/Amazon-Basics-microSDXC-Memory-Adapter/dp/B08TJRVWV1/"
+      "image": "assets/CableMngmtKit.png",
+      "link": "https://google.com"
     },
     {
-      "title": "128gb SDXC Memory Card",
-      "description": "",
+      "title": "TL-SG108 Network Switch",
+      "description": "8-port Gigabit switch for your network",
       "hours": 4,
-      "image": "assets/128msdx.png",
-      "link": "https://www.amazon.com/SanDisk-128GB-Ultra-UHS-I-Memory/dp/B0B7NS71G2/"
+      "image": "assets/TL-SG108.png",
+      "link": "https://google.com"
     },
     {
-      "title": "UGREEN 2.5Gb Switch 6-Port",
-      "description": "",
-      "hours": 14,
-      "image": "assets/ug25s6p.png",
-      "link": "https://www.amazon.com/AOKO-2-5-SATA-Converter-NVMe/dp/B0BDLZQCJY/"
+      "title": "TP-Link 2.5Gb PCIe Network Card (TX201)",
+      "description": "Upgrade your server to 2.5Gb networking",
+      "hours": 6,
+      "image": "assets/TP-Link2.5GB.png",
+      "link": "https://google.com"
     },
     {
-      "title": "TP-Link Dual-Band BE3600 Wi-Fi 7 Router",
-      "description": "",
-      "hours": 24,
-      "image": "assets/tpdbw7r.png",
-      "link": "https://www.amazon.com/TP-Link-Dual-Band-Archer-BE230-HomeShield/dp/B0DC99N2T8/"
+      "title": "Raspberry Pi Zero 2 W",
+      "description": "perfect for monitoring your servers!",
+      "hours": 7,
+      "image": "assets/PiZero2W.png",
+      "link": "https://google.com"
     },
     {
-      "title": "Thermal Paste",
-      "description": "",
-      "hours": 2,
-      "image": "assets/amx4tc.png",
-      "link": "https://www.amazon.com/ARCTIC-MX-4-2019-Performance-Durability/dp/B07L9BDY3T/"
+      "title": "500gb SSD",
+      "description": "Fast storage for your projects",
+      "hours": 10,
+      "image": "assets/500GB.png",
+      "link": "https://google.com"
     },
     {
-      "title": "TP-Link TL-SX1008 | 8 Port 10G",
-      "description": "",
-      "hours": 70,
-      "image": "assets/tlsx105.png",
-      "link": "https://www.amazon.com/TP-Link-TL-SX1008-Multi-Gig-Protection-Auto-Negotiation/dp/B0916BNNML/"
+      "title": "Amazon Basics UPS 400VA / 255W",
+      "description": "Basic battery backup and surge protection",
+      "hours": 12,
+      "image": "assets/AmazonBasicsUPS.png",
+      "link": "https://google.com"
     },
     {
-      "title": "TP-Link TL-SX105 | 5 Port 10G",
-      "description": "",
+      "title": "1tb SSD",
+      "description": "More storage for your homelab",
+      "hours": 16,
+      "image": "assets/1TB.png",
+      "link": "https://google.com"
+    },
+    {
+      "title": "TP-Link 10Gb PCIe Network Card (TX401)",
+      "description": "High-speed 10Gb networking for serious homelabs",
+      "hours": 20,
+      "image": "assets/TP-Link10GB.png",
+      "link": "https://google.com"
+    },
+    {
+      "title": "Seagate IronWolf Pro 4TB HDD",
+      "description": "NAS-grade storage built for 24/7 workloads",
+      "hours": 30,
+      "image": "assets/IronWolf4TB.png",
+      "link": "https://google.com"
+    },
+    {
+      "title": "Raspberry Pi 5",
+      "description": "The latest and most powerful Pi",
+      "hours": 30,
+      "image": "assets/PI5.png",
+      "link": "https://google.com"
+    },
+    {
+      "title": "Beelink Mini PC, Mini S12",
+      "description": "Compact and powerful mini PC",
+      "hours": 36,
+      "image": "assets/BeeLinkMiniPC.png",
+      "link": "https://google.com"
+    },
+    {
+      "title": "GMKtec Mini PC N95",
+      "description": "Efficient mini computer for your lab",
+      "hours": 40,
+      "image": "assets/GMKtecMiniPc.png",
+      "link": "https://google.com"
+    },
+    {
+      "title": "APC Back-UPS Pro 1500VA",
+      "description": "Reliable UPS for servers and NAS systems",
+      "hours": 40,
+      "image": "assets/APCBackUPS.png",
+      "link": "https://google.com"
+    },
+    {
+      "title": "Seagate IronWolf Pro 8TB HDD",
+      "description": "High-capacity NAS storage for growing labs",
+      "hours": 50,
+      "image": "assets/IronWolf8TB.png",
+      "link": "https://google.com"
+    },
+    {
+      "title": "Synology DS223 (2 bay)",
+      "description": "Professional NAS solution",
       "hours": 60,
-      "image": "assets/ug25s6p.png",
-      "link": "https://www.amazon.com/TP-Link-TL-SX105-Wall-Mount-Protection-Auto-Negotiation/dp/B09CYNHL4S/"
+      "image": "assets/Synology2BAY.png",
+      "link": "https://google.com"
+    },
+    {
+      "title": "4tb SSD",
+      "description": "Massive storage capacity",
+      "hours": 75,
+      "image": "assets/4TB.png",
+      "link": "https://google.com"
+    },
+    {
+      "title": "ASUS NUC 15 Pro (core 3)",
+      "description": "High-performance mini workstation",
+      "hours": 76,
+      "image": "assets/AsusMini.png",
+      "link": "https://google.com"
+    },
+    {
+      "title": "UGREEN NASync DH4300 Plus (4 bay)",
+      "description": "Advanced 4-bay NAS system",
+      "hours": 85,
+      "image": "assets/UGreenNasync.png",
+      "link": "https://google.com"
+    },
+    {
+      "title": "Synology DS925+ (4 bay)",
+      "description": "Premium 4-bay NAS solution",
+      "hours": 130,
+      "image": "assets/Synology4BAY.png",
+      "link": "https://google.com"
     }
   ],
   "colors": {

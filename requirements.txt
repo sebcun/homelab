@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 flask
 requests
 python-dotenv
 gunicorn
+=======
+>>>>>>> upstream/main

@@ -1,0 +1,107 @@
+{% extends "base.html" %} {% block title %} YSWS-Template {% endblock %} {%
+block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/dashboard.css') }}"
+/>
+<script src="{{ url_for('static', filename='js/reviewer.js') }}" defer></script>
+<style>
+  .project-count {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    padding: 0.35rem 0.85rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: 1px solid #dee2e6;
+  }
+</style>
+{% endblock %} 
+{% block navbar_balance %} {% endblock %} 
+{% block hackclub_flag %} {% endblock %}
+{% block content %}
+
+<div class="container py-5">
+
+  <div class="mb-5">
+    <div class="section-header">
+      <h2 class="section-title">
+        PENDING REVIEW
+      </h2>
+      <span class="project-count" id="pendingCount">0 Projects</span>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="pendingGrid"></div>
+  </div>
+
+  <div class="mb-5">
+    <div class="section-header">
+      <h2 class="section-title">
+        SHIPPED
+      </h2>
+      <span class="project-count" id="shippedCount">0 Projects</span>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="shippedGrid"></div>
+  </div>
+
+  <div class="mb-5">
+    <div class="section-header">
+      <h2 class="section-title">
+        BUILDING
+      </h2>
+      <span class="project-count" id="buildingCount">0 Projects</span>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="buildingGrid"></div>
+  </div>
+</div>
+
+<div class="modal fade" id="projectModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="projectModalLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <span class="badge mb-2" id="projectModalBadge"></span>
+          <h6 class="text-muted" id="projectModalHours"></h6>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Description</label>
+          <p id="projectDescText"></p>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Demo Link</label>
+          <input type="url" class="form-control" id="demoInput" readonly />
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">GitHub Link</label>
+          <input type="url" class="form-control" id="githubInput" readonly />
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Hackatime Projects</label>
+          <input type="text" class="form-control" id="hackatimeInput" readonly />
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Creator</label>
+          <p><a href="https://google.com" id="creatorLink" target="_blank"></a></p>
+        </div>
+      </div>
+      <div class="modal-footer" id="modalFooter">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" id="approveBtn" style="display: none;">Approve</button>
+        <button type="button" class="btn btn-danger" id="rejectBtn" style="display: none;">Reject</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="py-4 bg-light text-center">
+  <div class="container">
+    <span class="text-muted"
+      >This website is <a href="https://github.com">Open source!</a></span
+    >
+  </div>
+</footer>
+
+{% endblock %}
