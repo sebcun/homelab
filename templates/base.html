@@ -58,16 +58,20 @@
           <div class="navbar-center text-light fw-bold">
             {% block navbar_balance %}{% endblock %}
           </div>
-          {#
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            {% if current_user %} {% if current_user.is_reviewer %}
             <li class="nav-item">
-              <a class="nav-link" href="#">Home</a>
+              <a class="nav-link" href="/reviewer">Reviewer</a>
             </li>
+            {% endif %} {% if current_user.is_admin %}
             <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
+              <a class="nav-link" href="/admin">Admin</a>
+            </li>
+            {% endif %} {% endif %}
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
             </li>
           </ul>
-          #}
         </div>
       </div>
     </nav>

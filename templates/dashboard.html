@@ -32,11 +32,8 @@ block head %}
     </button>
   </div>
 
-  <div
-    class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"
-    id="projectsGrid"
-  >
-    <div class="col-12 text-center py-5" style="grid-column: 1 / -1;">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="projectsGrid">
+    <div class="col-12 text-center py-5" style="grid-column: 1 / -1">
       <div class="spinner-border text-primary mb-3" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
@@ -55,16 +52,15 @@ block head %}
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content overflow-hidden border-0 shadow">
       <div class="modal-body p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <div class="w-100 me-3">
-            <input
-              type="text"
-              class="form-control"
-              id="createProjectTitle"
-              placeholder="Project Title"
-              required
-            />
-          </div>
+        <div class="mb-4">
+          <h5 class="fw-bold">Project Title</h5>
+          <input
+            type="text"
+            class="form-control"
+            id="createProjectTitle"
+            placeholder="Awesome Mega Cool Project"
+            required
+          />
         </div>
 
         <div class="mb-4">
@@ -73,13 +69,13 @@ block head %}
             class="form-control"
             id="createProjectDesc"
             rows="3"
-            placeholder="Project description"
+            placeholder="This is my Awesome Mega Cool Project that I made."
             required
           ></textarea>
         </div>
 
         <div class="mb-4">
-          <label class="form-label fw-bold">Hackatime Projects</label>
+          <h5 class="form-label fw-bold">Hackatime Projects</h5>
           <div class="dropdown">
             <button
               class="btn custom-dropdown-btn w-100 text-start d-flex justify-content-between align-items-center"
@@ -95,7 +91,7 @@ block head %}
               <i class="bi bi-chevron-down"></i>
             </button>
             <ul
-              class="dropdown-menu w-100"
+              class="dropdown-menu w-100 scrollable"
               aria-labelledby="createHackatimeDropdown"
               id="createHackatimeList"
             ></ul>
@@ -209,7 +205,7 @@ block head %}
               <i class="bi bi-chevron-down"></i>
             </button>
             <ul
-              class="dropdown-menu w-100"
+              class="dropdown-menu w-100 scrollable"
               aria-labelledby="hackatimeDropdown"
               id="hackatimeList"
             ></ul>

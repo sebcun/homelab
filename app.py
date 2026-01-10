@@ -48,6 +48,11 @@ def get_current_user(clear_stale=True):
     return user_with_roles
 
 
+@app.context_processor
+def inject_current_user():
+    return {"current_user": get_current_user()}
+
+
 # GET /
 @app.route("/")
 def index():

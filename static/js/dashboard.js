@@ -86,7 +86,6 @@ async function loadProjects() {
     const hackatimeResponse = await fetch("/api/hackatime");
     const hackatimeData = await hackatimeResponse.json();
     hackatimeProjects = hackatimeData?.data?.projects || [];
-
     renderProjects();
     populateHackatimeDropdowns();
   } catch (error) {

@@ -29,3 +29,11 @@
 .vh100 {
   min-height: 98% !important;
 }
+
+#hackatimeList,
+#createHackatimeList {
+  max-height: 260px;
+  max-height: min(260px, calc(100vh - 200px));
+  overflow-y: auto;
+  overflow-x: hidden;
+}
