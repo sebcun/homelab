@@ -16,41 +16,95 @@ block head %}
     border: 1px solid #dee2e6;
   }
 </style>
-{% endblock %} 
-{% block navbar_balance %} {% endblock %} 
-{% block hackclub_flag %} {% endblock %}
-{% block content %}
+{% endblock %} {% block navbar_balance %} {% endblock %} {% block hackclub_flag
+%} {% endblock %} {% block content %}
 
-<div class="container py-5">
-
+<div class="container py-5 vh-100">
   <div class="mb-5">
     <div class="section-header">
-      <h2 class="section-title">
-        PENDING REVIEW
-      </h2>
+      <div class="d-flex align-items-center">
+        <h2 class="section-title me-3">PENDING REVIEW</h2>
+        <div class="input-group input-group-sm" style="width: 250px">
+          <input
+            type="text"
+            class="form-control"
+            id="pendingSearchInput"
+            placeholder="Search..."
+          />
+          <button
+            class="btn border-start-0"
+            type="button"
+            id="pendingSearchClear"
+            style="display: none; border-left: none"
+          >
+            &times;
+          </button>
+        </div>
+      </div>
       <span class="project-count" id="pendingCount">0 Projects</span>
     </div>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="pendingGrid"></div>
+    <div
+      class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"
+      id="pendingGrid"
+    ></div>
   </div>
 
   <div class="mb-5">
     <div class="section-header">
-      <h2 class="section-title">
-        SHIPPED
-      </h2>
+      <div class="d-flex align-items-center">
+        <h2 class="section-title me-3">SHIPPED</h2>
+        <div class="input-group input-group-sm" style="width: 250px">
+          <input
+            type="text"
+            class="form-control"
+            id="shippedSearchInput"
+            placeholder="Search..."
+          />
+          <button
+            class="btn border-start-0"
+            type="button"
+            id="shippedSearchClear"
+            style="display: none; border-left: none"
+          >
+            &times;
+          </button>
+        </div>
+      </div>
       <span class="project-count" id="shippedCount">0 Projects</span>
     </div>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="shippedGrid"></div>
+    <div
+      class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"
+      id="shippedGrid"
+    ></div>
   </div>
 
   <div class="mb-5">
     <div class="section-header">
-      <h2 class="section-title">
-        BUILDING
-      </h2>
+      <div class="d-flex align-items-center">
+        <h2 class="section-title me-3">BUILDING</h2>
+        <div class="input-group input-group-sm" style="width: 250px">
+          <input
+            type="text"
+            class="form-control"
+            id="buildingSearchInput"
+            placeholder="Search..."
+          />
+          <button
+            class="btn border-start-0"
+            type="button"
+            id="buildingSearchClear"
+            style="display: none; border-left: none"
+          >
+            &times;
+          </button>
+        </div>
+      </div>
       <span class="project-count" id="buildingCount">0 Projects</span>
     </div>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="buildingGrid"></div>
+    <div
+      class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"
+      id="buildingGrid"
+    ></div>
   </div>
 </div>
 
@@ -59,7 +113,12 @@ block head %}
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="projectModalLabel"></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <div class="mb-3">
@@ -80,17 +139,40 @@ block head %}
         </div>
         <div class="mb-3">
           <label class="form-label fw-bold">Hackatime Projects</label>
-          <input type="text" class="form-control" id="hackatimeInput" readonly />
+          <input
+            type="text"
+            class="form-control"
+            id="hackatimeInput"
+            readonly
+          />
         </div>
         <div class="mb-3">
           <label class="form-label fw-bold">Creator</label>
-          <p><a href="https://google.com" id="creatorLink" target="_blank"></a></p>
+          <p>
+            <a href="https://google.com" id="creatorLink" target="_blank"></a>
+          </p>
         </div>
       </div>
       <div class="modal-footer" id="modalFooter">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-success" id="approveBtn" style="display: none;">Approve</button>
-        <button type="button" class="btn btn-danger" id="rejectBtn" style="display: none;">Reject</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          id="approveBtn"
+          style="display: none"
+        >
+          Approve
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          id="rejectBtn"
+          style="display: none"
+        >
+          Reject
+        </button>
       </div>
     </div>
   </div>
