@@ -7,9 +7,17 @@ const projectModal = new bootstrap.Modal(
 const pendingGrid = document.getElementById("pendingGrid");
 const shippedGrid = document.getElementById("shippedGrid");
 const buildingGrid = document.getElementById("buildingGrid");
+
 const pendingCount = document.getElementById("pendingCount");
 const shippedCount = document.getElementById("shippedCount");
 const buildingCount = document.getElementById("buildingCount");
+
+const pendingSearchInput = document.getElementById("pendingSearchInput");
+const pendingSearchClear = document.getElementById("pendingSearchClear");
+const shippedSearchInput = document.getElementById("shippedSearchInput");
+const shippedSearchClear = document.getElementById("shippedSearchClear");
+const buildingSearchInput = document.getElementById("buildingSearchInput");
+const buildingSearchClear = document.getElementById("buildingSearchClear");
 
 const projectModalLabel = document.getElementById("projectModalLabel");
 const projectModalBadge = document.getElementById("projectModalBadge");
@@ -31,6 +39,15 @@ function getStatusBadge(status) {
     Rejected: "bg-danger",
   };
   return statusMap[status] || "bg-secondary";
+}
+
+function matchesSearch(project, term) {
+  if (!term) return true;
+  const t = term.toLowerCase();
+  const title = (project.title || "").toLowerCase();
+  const nickname = (project.nickname || project.email || "").toLowerCase();
+  const slackId = (project.slack_id || "").toLowerCase();
+  return title.includes(t) || nickname.includes(t) || slackId.includes(t);
 }
 
 function formatHours(hours) {
@@ -57,11 +74,21 @@ async function loadProjects() {
 }
 
 function renderProjects() {
-  const pending = projects.filter((p) => p.status === "Pending Review");
-  const shipped = projects.filter(
-    (p) => p.status === "Shipped" || p.status === "Approved"
+  const pendingTerm = pendingSearchInput.value.trim();
+  const shippedTerm = shippedSearchInput.value.trim();
+  const buildingTerm = buildingSearchInput.value.trim();
+
+  const pending = projects.filter(
+    (p) => p.status === "Pending Review" && matchesSearch(p, pendingTerm)
   );
-  const building = projects.filter((p) => p.status === "Building");
+  const shipped = projects.filter(
+    (p) =>
+      (p.status === "Shipped" || p.status === "Approved") &&
+      matchesSearch(p, shippedTerm)
+  );
+  const building = projects.filter(
+    (p) => p.status === "Building" && matchesSearch(p, buildingTerm)
+  );
 
   pendingCount.textContent = `${pending.length} Project${
     pending.length !== 1 ? "s" : ""
@@ -96,6 +123,7 @@ function renderGrid(grid, projectList) {
     const status = project.status || "Building";
     const hours = project.hours || 0;
     const nickname = project.nickname || project.email || "Unknown";
+    const slackId = project.slack_id || "";
     const statusClass = getStatusBadge(status);
     const buttonText =
       status === "Pending Review" ? "REVIEW PROJECT" : "VIEW PROJECT";
@@ -110,7 +138,7 @@ function renderGrid(grid, projectList) {
             <span class="badge ${statusClass}">${status}</span>
           </div>
           <p class="card-text text-truncate mb-2">${description}</p>
-          <p class="text-muted small mb-2">By: <a href="https://google.com" target="_blank">${nickname}</a></p>
+          <p class="text-muted small mb-2">By: <a href="https://hackclub.enterprise.slack.com/team/${slackId}" target="_blank">${nickname}</a></p>
           <div class="d-flex justify-content-between align-items-center mt-auto">
             <h6 class="text-muted mb-0">${formatHours(hours)}</h6>
             <button type="button" class="btn ${buttonClass} btn-sm px-3" data-project-id="${
@@ -141,6 +169,7 @@ function openProjectModal(project) {
   const status = project.status || "Building";
   const hours = project.hours || 0;
   const nickname = project.nickname || project.email || "Unknown";
+  const slackId = project.slack_id || "";
 
   projectModalLabel.textContent = title;
   projectModalBadge.className = "badge " + getStatusBadge(status);
@@ -151,6 +180,7 @@ function openProjectModal(project) {
   githubInput.value = githubLink;
   hackatimeInput.value = hackatimeProject;
   creatorLink.textContent = nickname;
+  creatorLink.href = `https://hackclub.enterprise.slack.com/team/${slackId}`;
 
   if (status === "Pending Review") {
     approveBtn.style.display = "";
@@ -238,7 +268,25 @@ async function handleReject() {
   }
 }
 
+function setupSearch(input, clearBtn) {
+  input.addEventListener("input", () => {
+    clearBtn.style.display = input.value ? "block" : "none";
+    renderProjects();
+  });
+
+  clearBtn.addEventListener("click", () => {
+    input.value = "";
+    clearBtn.style.display = "none";
+    renderProjects();
+    input.focus();
+  });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
+  setupSearch(pendingSearchInput, pendingSearchClear);
+  setupSearch(shippedSearchInput, shippedSearchClear);
+  setupSearch(buildingSearchInput, buildingSearchClear);
+
   loadProjects();
   approveBtn.addEventListener("click", handleApprove);
   rejectBtn.addEventListener("click", handleReject);

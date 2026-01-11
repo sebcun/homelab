@@ -25,3 +25,22 @@
 .btn-lg.same-size {
   min-width: 200px;
 }
+
+.vh100 {
+  min-height: 98% !important;
+}
+
+#hackatimeList,
+#createHackatimeList {
+  max-height: 260px;
+  max-height: min(260px, calc(100vh - 200px));
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.navbar-brand-custom {
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}

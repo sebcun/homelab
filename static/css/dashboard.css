@@ -5,7 +5,6 @@
 }
 
 .project-modal-close {
-  background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(4px);
   border-radius: 50%;
   padding: 0.5rem;
@@ -13,13 +12,10 @@
 }
 
 .project-modal-close:hover {
-  background-color: rgba(255, 255, 255, 1);
   transform: scale(1.1);
 }
 
 .form-control-modern {
-  background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   font-weight: 500;
@@ -27,14 +23,10 @@
 }
 
 .form-control-modern:focus {
-  background-color: #ffffff;
-  border-color: var(--bs-primary);
   box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
 }
 
 .input-group-text-modern {
-  background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
   border-right: none;
   color: #6c757d;
   border-radius: 0.5rem 0 0 0.5rem;
@@ -46,28 +38,14 @@
   border-bottom-left-radius: 0;
 }
 
-.input-group:focus-within .input-group-text-modern {
-  border-color: var(--bs-primary);
-  background-color: #fff;
-}
-
 .input-group:focus-within .form-control-modern {
   border-left: none;
 }
 
 .custom-dropdown-btn {
-  background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
-  color: #212529;
   font-weight: 500;
-}
-
-.custom-dropdown-btn:hover,
-.custom-dropdown-btn:focus {
-  background-color: #e9ecef;
-  border-color: #dde0e3;
 }
 
 .dropdown-menu {
@@ -97,7 +75,6 @@
 
 .form-check-input:checked + .form-check-label {
   text-decoration: line-through;
-  color: #6c757d;
 }
 
 .section-header {
@@ -106,7 +83,6 @@
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #dee2e6;
 }
 .section-title {
   font-size: 1.5rem;

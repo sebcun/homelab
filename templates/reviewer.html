@@ -1,5 +1,5 @@
-{% extends "base.html" %} {% block title %} HomeLab {% endblock %} {% block head
-%}
+{% extends "base.html" %} {% block title %} YSWS-Template {% endblock %} {%
+block head %}
 <link
   rel="stylesheet"
   href="{{ url_for('static', filename='css/dashboard.css') }}"
@@ -19,10 +19,28 @@
 {% endblock %} {% block navbar_balance %} {% endblock %} {% block hackclub_flag
 %} {% endblock %} {% block content %}
 
-<div class="container py-5">
+<div class="container py-5 vh100">
   <div class="mb-5">
     <div class="section-header">
-      <h2 class="section-title">PENDING REVIEW</h2>
+      <div class="d-flex align-items-center">
+        <h2 class="section-title me-3">PENDING REVIEW</h2>
+        <div class="input-group input-group-sm" style="width: 250px">
+          <input
+            type="text"
+            class="form-control"
+            id="pendingSearchInput"
+            placeholder="Search (project name, author, slack ID)..."
+          />
+          <button
+            class="btn border-start-0"
+            type="button"
+            id="pendingSearchClear"
+            style="display: none; border-left: none"
+          >
+            &times;
+          </button>
+        </div>
+      </div>
       <span class="project-count" id="pendingCount">0 Projects</span>
     </div>
     <div
@@ -33,7 +51,25 @@
 
   <div class="mb-5">
     <div class="section-header">
-      <h2 class="section-title">SHIPPED</h2>
+      <div class="d-flex align-items-center">
+        <h2 class="section-title me-3">SHIPPED</h2>
+        <div class="input-group input-group-sm" style="width: 250px">
+          <input
+            type="text"
+            class="form-control"
+            id="shippedSearchInput"
+            placeholder="Search (project name, author, slack ID)..."
+          />
+          <button
+            class="btn border-start-0"
+            type="button"
+            id="shippedSearchClear"
+            style="display: none; border-left: none"
+          >
+            &times;
+          </button>
+        </div>
+      </div>
       <span class="project-count" id="shippedCount">0 Projects</span>
     </div>
     <div
@@ -44,7 +80,25 @@
 
   <div class="mb-5">
     <div class="section-header">
-      <h2 class="section-title">BUILDING</h2>
+      <div class="d-flex align-items-center">
+        <h2 class="section-title me-3">BUILDING</h2>
+        <div class="input-group input-group-sm" style="width: 250px">
+          <input
+            type="text"
+            class="form-control"
+            id="buildingSearchInput"
+            placeholder="Search (project name, author, slack ID)..."
+          />
+          <button
+            class="btn border-start-0"
+            type="button"
+            id="buildingSearchClear"
+            style="display: none; border-left: none"
+          >
+            &times;
+          </button>
+        </div>
+      </div>
       <span class="project-count" id="buildingCount">0 Projects</span>
     </div>
     <div
@@ -127,8 +181,7 @@
 <footer class="py-4 bg-light text-center">
   <div class="container">
     <span class="text-muted"
-      >This website is
-      <a href="https://github.com/sebcun/homelab">Open source!</a></span
+      >This website is <a href="{{ site.github }}">Open source!</a></span
     >
   </div>
 </footer>

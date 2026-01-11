@@ -1,5 +1,5 @@
-{% extends "base.html" %} {% block title %} HomeLab {% endblock %} {% block head
-%}
+{% extends "base.html" %} {% block title %} YSWS-Template {% endblock %} {%
+block head %}
 <link
   rel="stylesheet"
   href="{{ url_for('static', filename='css/carousel.css') }}"
@@ -22,12 +22,8 @@
   class="d-flex align-items-center justify-content-center vh-100 text-center"
 >
   <div class="col-lg-8 mx-auto">
-    <h1 class="display-1 fw-bold mb-3">HomeLab</h1>
-    <p class="lead mb-4">
-      Welcome to HomeLab. A YSWS where you ship projects related to having a
-      self hosted server at home, and we ship things to help you create your own
-      setup (or update a setup you already have!)
-    </p>
+    <h1 class="display-1 fw-bold mb-3">{{ site.home.title }}</h1>
+    <p class="lead mb-4">{{ site.home.description }}</p>
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
       <a
         href="#rewards"
@@ -35,9 +31,18 @@
       >
         Rewards
       </a>
+      {% if site.active %}
       <a href="/login" class="btn btn-primary btn-lg px-4 gap-3 same-size">
         Get Started
       </a>
+      {% else %}
+      <a
+        href="{{ site.rsvp }}"
+        class="btn btn-primary btn-lg px-4 gap-3 same-size"
+      >
+        RSVP
+      </a>
+      {% endif %}
       <a href="#faqs" class="btn btn-outline-secondary btn-lg px-4 same-size">
         FAQs
       </a>
@@ -54,7 +59,7 @@
   </div>
 </section>
 
-<section class="py-5 bg-white" id="faqs">
+<section class="py-5 bg-light" id="faqs">
   <div class="container col-lg-8">
     <h1 class="text-center mb-5 fw-bold">FAQs</h1>
     <div class="accordion" id="faqAccordion"></div>
@@ -64,8 +69,7 @@
 <footer class="py-4 bg-light text-center">
   <div class="container">
     <span class="text-muted"
-      >This website is
-      <a href="https://github.com/sebcun/homelab">Open source!</a></span
+      >This website is <a href="{{ site.github }}">Open source!</a></span
     >
   </div>
 </footer>
