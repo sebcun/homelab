@@ -31,9 +31,18 @@ block head %}
       >
         Rewards
       </a>
+      {% if site.active %}
       <a href="/login" class="btn btn-primary btn-lg px-4 gap-3 same-size">
         Get Started
       </a>
+      {% else %}
+      <a
+        href="{{ site.rsvp }}"
+        class="btn btn-primary btn-lg px-4 gap-3 same-size"
+      >
+        RSVP
+      </a>
+      {% endif %}
       <a href="#faqs" class="btn btn-outline-secondary btn-lg px-4 same-size">
         FAQs
       </a>

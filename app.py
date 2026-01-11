@@ -24,6 +24,8 @@ USERINFO_URL = "https://auth.hackclub.com/oauth/userinfo"
 
 # Load Config
 DEFAULT_SITE_CONFIG = {
+  "active": False,
+  "rsvp": "",
   "home": {
     "title": "YSWS Template",
     "description": "description of the YSWS"
@@ -40,7 +42,9 @@ DEFAULT_SITE_CONFIG = {
     "hero_grad_rbg": "30, 64, 175"
   },
   "admin_slacks": [],
-  "reviewer_slacks": []
+  "reviewer_slacks": [],
+  "start_date": "",
+  "end_date": ""
 }
 
 def load_site_config():
@@ -224,7 +228,7 @@ def get_projects():
 
         slack_id = user.get("slack_id")
         hackatime_response = requests.get(
-            f"https://hackatime.hackclub.com/api/v1/users/{slack_id}/stats?limit=1000&features=projects&start_date=2025-12-16"
+            f"https://hackatime.hackclub.com/api/v1/users/{slack_id}/stats?limit=1000&features=projects&start_date={SITE_CONFIG['start_date']}"
         ).json()
         projects = db.get_user_projects(user["id"])
         hackatime_projects = hackatime_response.get("data", {}).get("projects", [])
@@ -310,7 +314,7 @@ def get_hackatime():
     slack_id = user.get("slack_id")
 
     hackatime_response = requests.get(
-        f"https://hackatime.hackclub.com/api/v1/users/{slack_id}/stats?limit=1000&features=projects&start_date=2025-12-16"
+        f"https://hackatime.hackclub.com/api/v1/users/{slack_id}/stats?limit=1000&features=projects&start_date={SITE_CONFIG['start_date']}"
     ).json()
     return jsonify(hackatime_response)
 
@@ -411,7 +415,7 @@ def update_project(project_id):
                     ht_names = curr.get("hackatime_project", "")
             if ht_names and slack_id:
                 hackatime_response = requests.get(
-                    f"https://hackatime.hackclub.com/api/v1/users/{slack_id}/stats?limit=1000&features=projects&start_date=2025-12-16"
+                    f"https://hackatime.hackclub.com/api/v1/users/{slack_id}/stats?limit=1000&features=projects&start_date={SITE_CONFIG['start_date']}"
                 ).json()
                 hackatime_projects = hackatime_response.get("data", {}).get(
                     "projects", []
