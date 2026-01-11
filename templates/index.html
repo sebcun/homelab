@@ -32,7 +32,7 @@ block head %}
         Rewards
       </a>
       {% if site.active %}
-      <a href="/login" class="btn btn-primary btn-lg px-4 gap-3 same-size">
+      <a href="/dash" class="btn btn-primary btn-lg px-4 gap-3 same-size">
         Get Started
       </a>
       {% else %}
@@ -54,7 +54,7 @@ block head %}
   <div class="container-fluid px-0">
     <h1 class="text-center mb-4">Rewards</h1>
     <div class="carousel-container">
-      <div class="carousel-track"></div>
+      <div class="carousel-track" id="rewardsCarousel"></div>
     </div>
   </div>
 </section>
@@ -63,6 +63,15 @@ block head %}
   <div class="container col-lg-8">
     <h1 class="text-center mb-5 fw-bold">FAQs</h1>
     <div class="accordion" id="faqAccordion"></div>
+  </div>
+</section>
+
+<section class="py-5 bg-light" id="shipped-projects">
+  <div class="container-fluid px-0">
+    <h1 class="text-center mb-5 fw-bold">Shipped Projects</h1>
+    <div class="carousel-container">
+      <div class="carousel-track" id="shippedCarousel"></div>
+    </div>
   </div>
 </section>
 

@@ -44,3 +44,11 @@
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
+
+.square-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
