@@ -161,6 +161,16 @@ def auth_callback():
     email = userinfo.get("email")
     nickname = userinfo.get("nickname") or userinfo.get("name")
     slack_id = userinfo.get("slack_id")
+    
+    if not SITE_CONFIG.get("active"):
+        is_admin = (email in SITE_CONFIG.get("admin_slacks", [])) or (
+            slack_id in SITE_CONFIG.get("admin_slacks", [])
+        )
+        is_reviewer = (slack_id in SITE_CONFIG.get("reviewer_slacks", [])) or is_admin
+        if not (is_admin or is_reviewer):
+            session.clear()
+            return redirect(url_for("index"))
+        
     user_id = db.get_or_create_user(email, nickname, slack_id)
     session["user_id"] = user_id
     session["slack_id"] = slack_id
