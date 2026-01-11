@@ -540,14 +540,21 @@ def update_user_profile():
     if not user:
         return jsonify({"error": "Unauthorized"}), 401
 
-    data = request.get_json()
-    success = db.update_user(
-        user_id=user["id"], nickname=data.get("nickname"), slack_id=data.get("slack_id")
-    )
+    data = request.get_json() or {}
 
-    if success and data.get("nickname"):
-        session["nickname"] = data.get("nickname")
+    allowed_fields = ["nickname"]  # Add more fields here if needed for actual production.
+    update_data = {k: data[k] for k in allowed_fields if k in data}
+
+    if not update_data:
+        return jsonify({"error": "No valid fields to update"}), 400
+
+    success = db.update_user(user_id=user["id"], **update_data)
+
+    if success and "nickname" in update_data:
+        session["nickname"] = update_data["nickname"]
+
     return jsonify({"success": success})
+
 
 
 # GET /api/faqs
