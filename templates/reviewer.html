@@ -5,17 +5,7 @@ endblock %} {% block head %}
   href="{{ url_for('static', filename='css/dashboard.css') }}"
 />
 <script src="{{ url_for('static', filename='js/reviewer.js') }}" defer></script>
-<style>
-  .project-count {
-    background-color: #f8f9fa;
-    color: #6c757d;
-    padding: 0.35rem 0.85rem;
-    border-radius: 2rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    border: 1px solid #dee2e6;
-  }
-</style>
+
 {% endblock %} {% block navbar_balance %} {% endblock %} {% block hackclub_flag
 %} {% endblock %} {% block content %}
 
@@ -126,6 +116,14 @@ endblock %} {% block head %}
           <h6 class="text-muted" id="projectModalHours"></h6>
         </div>
         <div class="mb-3">
+          <label class="form-label fw-bold">Status</label>
+          <select class="form-select form-select-sm" id="statusSelect" disabled>
+            <option value="Building">Building</option>
+            <option value="Pending Review">Pending</option>
+            <option value="Shipped">Shipped</option>
+          </select>
+        </div>
+        <div class="mb-3">
           <label class="form-label fw-bold">Description</label>
           <p id="projectDescText"></p>
         </div>
@@ -144,7 +142,12 @@ endblock %} {% block head %}
             class="form-control"
             id="hackatimeInput"
             readonly
+            placeholder="e.g., Project A, Project B"
           />
+          <div class="form-text">
+            Enter Hackatime project names separated by commas (stored as a
+            comma-separated string).
+          </div>
         </div>
         <div class="mb-3">
           <label class="form-label fw-bold">Creator</label>
@@ -153,26 +156,75 @@ endblock %} {% block head %}
           </p>
         </div>
       </div>
-      <div class="modal-footer" id="modalFooter">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-        <button
-          type="button"
-          class="btn btn-success"
-          id="approveBtn"
-          style="display: none"
-        >
-          Approve
-        </button>
-        <button
-          type="button"
-          class="btn btn-danger"
-          id="rejectBtn"
-          style="display: none"
-        >
-          Reject
-        </button>
+      <div
+        class="modal-footer d-flex justify-content-between align-items-center"
+        id="modalFooter"
+      >
+        <div id="modalFooterLeft" class="d-flex align-items-center">
+          {% if current_user.is_admin %}
+          <div class="me-3" id="paySection" style="display: none">
+            <label class="form-label fw-bold mb-1">Pay Hours</label>
+            <div class="input-group input-group-sm">
+              <input
+                type="number"
+                class="form-control"
+                id="payInput"
+                step="0.5"
+                min="0"
+              />
+              <button type="button" class="btn btn-outline-primary" id="payBtn">
+                Pay
+              </button>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        <div id="modalFooterRight" class="d-flex align-items-center">
+          {% if current_user.is_admin %}
+          <button
+            type="button"
+            class="btn btn-outline-secondary me-2"
+            id="editBtn"
+          >
+            Edit
+          </button>
+          <button type="button" class="btn btn-danger me-2" id="deleteBtn">
+            Delete
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary me-2"
+            id="saveBtn"
+            style="display: none"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary me-2"
+            id="cancelBtn"
+            style="display: none"
+          >
+            Cancel
+          </button>
+          {% endif %}
+          <button
+            type="button"
+            class="btn btn-success me-2"
+            id="approveBtn"
+            style="display: none"
+          >
+            Approve
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            id="rejectBtn"
+            style="display: none"
+          >
+            Reject
+          </button>
+        </div>
       </div>
     </div>
   </div>

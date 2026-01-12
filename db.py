@@ -1,9 +1,9 @@
 import sqlite3
 from contextlib import contextmanager
 from typing import Optional, List, Dict, Any
+import json
 
 DB_NAME = "users.db"
-
 
 @contextmanager
 def get_db_connection():
@@ -18,7 +18,6 @@ def get_db_connection():
     finally:
         conn.close()
 
-
 def init_db():
     with get_db_connection() as conn:
         c = conn.cursor()
@@ -28,6 +27,7 @@ def init_db():
             email TEXT UNIQUE NOT NULL,
             nickname TEXT,
             slack_id TEXT,
+            hours REAL DEFAULT 0,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )"""
         )
@@ -41,6 +41,7 @@ def init_db():
             github_link TEXT,
             hackatime_project TEXT,
             hours REAL DEFAULT 0,
+            paid_hours REAL DEFAULT 0,
             status TEXT DEFAULT 'Building',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -51,6 +52,24 @@ def init_db():
             "CREATE INDEX IF NOT EXISTS idx_projects_user_id ON projects(user_id)"
         )
         c.execute("CREATE INDEX IF NOT EXISTS idx_projects_status ON projects(status)")
+        
+        c.execute('''CREATE TABLE IF NOT EXISTS orders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            reward_id INTEGER NOT NULL,
+            quantity INTEGER NOT NULL DEFAULT 1,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL,
+            phone TEXT,
+            address TEXT,
+            status TEXT DEFAULT 'pending',
+            notes TEXT,
+            total_cost REAL NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+        )''')
+
+        
 
 
 def get_or_create_user(
@@ -94,7 +113,7 @@ def get_user_by_slack_id(slack_id: str) -> Optional[Dict[str, Any]]:
 
 
 def update_user(
-    user_id: int, nickname: Optional[str] = None, slack_id: Optional[str] = None
+    user_id: int, nickname: Optional[str] = None, slack_id: Optional[str] = None, hours: Optional[float] = None,
 ) -> bool:
     with get_db_connection() as conn:
         c = conn.cursor()
@@ -102,10 +121,13 @@ def update_user(
         params = []
         if nickname is not None:
             updates.append("nickname = ?")
-            params.append(nickname)
+            params.append(nickname)                         
         if slack_id is not None:
             updates.append("slack_id = ?")
             params.append(slack_id)
+        if hours is not None:
+            updates.append("hours = ?")
+            params.append(hours)
         if not updates:
             return False
         params.append(user_id)
@@ -129,12 +151,13 @@ def create_project(
     github_link: Optional[str] = None,
     hackatime_project: Optional[str] = None,
     hours: float = 0,
+    paid_hours: float = 0,
 ) -> int:
     with get_db_connection() as conn:
         c = conn.cursor()
         c.execute(
             """INSERT INTO projects
-            (user_id, title, description, demo_link, github_link, hackatime_project, hours)
+            (user_id, title, description, demo_link, github_link, hackatime_project, hours, paid_hours)
             VALUES (?, ?, ?, ?, ?, ?, ?)""",
             (
                 user_id,
@@ -144,6 +167,7 @@ def create_project(
                 github_link,
                 hackatime_project,
                 hours,
+                paid_hours,
             ),
         )
         return c.lastrowid
@@ -185,6 +209,7 @@ def update_project(
     github_link: Optional[str] = None,
     hackatime_project: Optional[str] = None,
     hours: Optional[float] = None,
+    paid_hours: Optional[float] = None,
     status: Optional[str] = None,
 ) -> bool:
     with get_db_connection() as conn:
@@ -209,6 +234,9 @@ def update_project(
         if hours is not None:
             updates.append("hours = ?")
             params.append(hours)
+        if paid_hours is not None:
+            updates.append("paid_hours = ?")
+            params.append(paid_hours)
         if status is not None:
             updates.append("status = ?")
             params.append(status)
@@ -357,3 +385,79 @@ def check_hackatime_projects_available(
     used = get_used_hackatime_projects(used_id, exclude_project_id)
     conflicts = [n for n in desired_names if n in used]
     return conflicts
+
+def set_project_paid_hours(project_id: int, paid_hours: float) -> bool:
+    with get_db_connection() as conn:
+        c = conn.cursor()
+        c.execute("SELECT paid_hours, user_id FROM projects WHERE id = ?", (project_id,))
+        row = c.fetchone()
+        if not row:
+            return False
+        prev_paid = row["paid_hours"] or 0
+        user_id = row["user_id"]
+        delta = paid_hours - prev_paid
+        c.execute("UPDATE projects SET paid_hours = ? WHERE id = ?", (paid_hours, project_id))
+        c.execute("UPDATE users SET hours = COALESCE(hours, 0) + ? WHERE id = ?", (delta, user_id))
+        return True
+ 
+def create_order(user_id: int, reward_id: int, quantity: int, name: str, email: str, phone: str, address: dict, total_cost: float) -> int:
+    with get_db_connection() as conn:
+        c = conn.cursor()
+        c.execute("UPDATE users SET hours = hours - ? WHERE id = ? AND hours >= ?", (total_cost, user_id, total_cost))
+        if c.rowcount == 0:
+            return None
+        c.execute(
+            "INSERT INTO orders (user_id, reward_id, quantity, name, email, phone, address, total_cost) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (user_id, reward_id, quantity, name, email, phone, json.dumps(address or {}), total_cost),
+        )
+        return c.lastrowid
+
+def get_orders_for_user(user_id: int):
+    with get_db_connection() as conn:
+        c = conn.cursor()
+        c.execute("""SELECT o.*, u.email as user_email, u.nickname as user_nickname, u.slack_id as user_slack_id
+                     FROM orders o JOIN users u ON o.user_id = u.id
+                     WHERE o.user_id = ? ORDER BY o.created_at DESC""", (user_id,))
+        rows = [dict(r) for r in c.fetchall()]
+        for r in rows:
+            try:
+                r["address"] = json.loads(r.get("address") or "{}")
+            except Exception:
+                r["address"] = {}
+        return rows
+
+def get_all_orders():
+    with get_db_connection() as conn:
+        c = conn.cursor()
+        c.execute("""SELECT o.*, u.email as user_email, u.nickname as user_nickname, u.slack_id as user_slack_id
+                     FROM orders o JOIN users u ON o.user_id = u.id ORDER BY o.created_at DESC""")
+        rows = [dict(r) for r in c.fetchall()]
+        for r in rows:
+            try:
+                r["address"] = json.loads(r.get("address") or "{}")
+            except Exception:
+                r["address"] = {}
+        return rows
+
+
+def get_order_by_id(order_id: int):
+    with get_db_connection() as conn:
+        c = conn.cursor()
+        c.execute("SELECT * FROM orders WHERE id = ?", (order_id,))
+        r = c.fetchone()
+        return dict(r) if r else None
+
+
+def update_order_status(order_id: int, status: str) -> bool:
+    with get_db_connection() as conn:
+        c = conn.cursor()
+        c.execute("UPDATE orders SET status = ? WHERE id = ?", (status, order_id))
+        return c.rowcount > 0
+
+
+def update_order_notes(order_id: int, notes: str) -> bool:
+    with get_db_connection() as conn:
+        c = conn.cursor()
+        c.execute("UPDATE orders SET notes = ? WHERE id = ?", (notes, order_id))
+        return c.rowcount > 0
+                                                                                                                                                                                                                                                                                                                                                                                                    

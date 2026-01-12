@@ -1,0 +1,214 @@
+{% extends "base.html" %} {% block title %}Admin Orders - {{ site.home.title
+}}{% endblock %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/dashboard.css') }}"
+/>
+<style>
+  .sidebar {
+    min-height: calc(100vh - 56px);
+    overflow-y: auto;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 2rem;
+  }
+</style>
+{% endblock %} {% block hackclub_flag %} {% endblock %} {% block navbar_balance
+%}{% endblock %} {% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <nav
+      id="adminSidebar"
+      class="col-12 col-md-3 col-lg-2 bg-light sidebar collapse d-md-block"
+    >
+      <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/admin">Overview</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/faqs">FAQs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/rewards">Rewards</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/admin/orders">Orders</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="col">
+      <div class="container py-4">
+        <button
+          class="btn btn-outline-secondary d-md-none mb-3"
+          data-bs-toggle="collapse"
+          data-bs-target="#adminSidebar"
+          aria-controls="adminSidebar"
+          aria-expanded="false"
+        >
+          ☰ Menu
+        </button>
+
+        <section id="ordersSection">
+          <div class="section-header mb-3">
+            <div class="d-flex align-items-center">
+              <h2 class="section-title me-3">PENDING ORDERS</h2>
+              <div class="input-group input-group-sm" style="width: 250px">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="pendingSearchInput"
+                  placeholder="Search (author, slack ID)..."
+                />
+                <button
+                  class="btn border-start-0"
+                  type="button"
+                  id="pendingSearchClear"
+                  style="display: none"
+                >
+                  &times;
+                </button>
+              </div>
+            </div>
+            <span class="project-count" id="pendingCount">0 Orders</span>
+          </div>
+
+          <div
+            class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4"
+            id="pendingOrderList"
+          >
+            <div class="col-12 text-center text-muted py-4">
+              Loading Orders...
+            </div>
+          </div>
+
+          <div class="section-header mt-4 mb-3">
+            <div class="d-flex align-items-center">
+              <h2 class="section-title me-3">FULFILLED ORDERS</h2>
+              <div class="input-group input-group-sm" style="width: 250px">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="fulfilledSearchInput"
+                  placeholder="Search (author, slack ID)..."
+                />
+                <button
+                  class="btn border-start-0"
+                  type="button"
+                  id="fulfilledSearchClear"
+                  style="display: none"
+                >
+                  &times;
+                </button>
+              </div>
+            </div>
+            <span class="project-count" id="fulfilledCount">0 Orders</span>
+          </div>
+
+          <div
+            class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"
+            id="fulfilledOrderList"
+          >
+            <div class="col-12 text-center text-muted py-4">
+              Loading Orders...
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="modal fade" id="orderModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold" id="orderModalLabel">Order</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div>
+            <h6 class="mb-1" id="orderModalTitle"></h6>
+            <p class="text-muted small mb-0" id="orderModalUser"></p>
+          </div>
+          <div>
+            <span id="orderModalBadge" class="badge bg-secondary">STATUS</span>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <p class="mb-1"><strong>Order ID</strong></p>
+            <p id="orderModalId" class="text-muted small mb-0"></p>
+          </div>
+          <div class="col-12 col-md-6">
+            <p class="mb-1"><strong>Placed</strong></p>
+            <p id="orderModalCreated" class="text-muted small mb-0"></p>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <p class="mb-1"><strong>Recipient</strong></p>
+            <p id="orderModalName" class="text-muted small mb-0"></p>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <p class="mb-1"><strong>Contact</strong></p>
+            <p id="orderModalContact" class="text-muted small mb-0"></p>
+          </div>
+
+          <div class="col-12">
+            <p class="mb-1"><strong>Items</strong></p>
+            <p id="orderModalItems" class="text-muted small mb-0"></p>
+          </div>
+
+          <div class="col-12">
+            <p class="mb-1"><strong>Address</strong></p>
+            <p id="orderModalAddress" class="text-muted small mb-0"></p>
+          </div>
+
+          <div class="col-12">
+            <label for="orderNotes" class="form-label fw-bold">Notes</label>
+            <textarea
+              id="orderNotes"
+              class="form-control form-control-modern"
+              rows="3"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-0">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button id="orderToggleStatusBtn" type="button" class="btn btn-primary">
+          Toggle Status
+        </button>
+        <button id="orderSaveNotesBtn" type="button" class="btn btn-secondary">
+          Save Notes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="py-4 bg-light text-center mt-auto">
+  <div class="container">
+    <span class="text-muted"
+      >This website is <a href="{{ site.github }}">Open source!</a></span
+    >
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/admin/orders.js') }}"></script>
+{% endblock %}

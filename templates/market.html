@@ -1,0 +1,435 @@
+{% extends "base.html" %} {% block title %}{{ site.home.title }}{% endblock %}
+{% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/dashboard.css') }}"
+/>
+<style>
+  .fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .form-check-input:checked + .form-check-label {
+    text-decoration: line-through;
+    color: #6c757d;
+  }
+</style>
+{% endblock %} {% block hackclub_flag %} {% endblock %} {% block navbar_balance
+%} {% endblock %} {% block content %}
+
+<div class="container py-5 vh-100">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Market</h1>
+    <div class="d-flex align-items-center">
+      <a
+        href="{{ site.slack_link }}"
+        id="needHelpBtn"
+        class="btn btn-outline-secondary me-2"
+        target="_blank"
+      >
+        <i class="bi bi-question-circle me-1"></i>Need help?
+      </a>
+      <button class="btn btn-primary" id="createProjectBtn">
+        <i class="bi bi-box-seam me-2"></i>View My Orders
+      </button>
+    </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="marketGrid">
+    <div class="col-12 text-center py-5" style="grid-column: 1 / -1">
+      <div class="spinner-border text-primary mb-3" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="text-muted">Loading rewards...</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="orderModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content overflow-hidden border-0 shadow">
+      <div class="modal-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div class="d-flex gap-3 align-items-start">
+            <img
+              id="orderItemImage"
+              src=""
+              alt=""
+              style="width: 96px; height: 96px; object-fit: contain"
+              class="rounded bg-light"
+            />
+            <div class="flex-grow-1">
+              <h5 id="orderItemName" class="mb-1 fw-bold"></h5>
+              <div>
+                <span id="orderItemCostBadge" class="badge bg-primary"></span>
+              </div>
+              <p id="orderItemDesc" class="text-muted mt-2 mb-0 small"></p>
+            </div>
+          </div>
+
+          <div class="text-end" style="min-width: 160px">
+            <div
+              class="input-group"
+              style="max-width: 200px; margin-left: auto; align-items: center"
+            >
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="qtyMinus"
+              >
+                −
+              </button>
+              <input
+                type="number"
+                id="orderQuantity"
+                class="form-control text-center border-0"
+                min="1"
+                max="100"
+                value="1"
+                style="height: auto; box-shadow: none"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="qtyPlus"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="mb-3">
+          <label class="form-label fw-bold">Shipping Name</label>
+          <input
+            id="orderName"
+            class="form-control"
+            type="text"
+            placeholder="Full name"
+          />
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Email</label>
+            <input
+              id="orderEmail"
+              class="form-control"
+              type="email"
+              placeholder="name@example.com"
+            />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Phone</label>
+            <input
+              id="orderPhone"
+              class="form-control"
+              type="tel"
+              placeholder="+1 555 555 5555"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold">Street Address</label>
+          <input
+            id="orderAddress"
+            class="form-control"
+            type="text"
+            placeholder="Street address"
+          />
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label fw-bold">State/Region</label>
+            <input id="orderState" class="form-control" type="text" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Country</label>
+            <select id="orderCountry" class="form-select">
+              <option value="">Select country…</option>
+              <option>Afghanistan</option>
+              <option>Albania</option>
+              <option>Algeria</option>
+              <option>Andorra</option>
+              <option>Angola</option>
+              <option>Antigua and Barbuda</option>
+              <option>Argentina</option>
+              <option>Armenia</option>
+              <option>Aruba</option>
+              <option>Australia</option>
+              <option>Austria</option>
+              <option>Azerbaijan</option>
+              <option>Bahamas</option>
+              <option>Bahrain</option>
+              <option>Bangladesh</option>
+              <option>Barbados</option>
+              <option>Belarus</option>
+              <option>Belgium</option>
+              <option>Belize</option>
+              <option>Benin</option>
+              <option>Bhutan</option>
+              <option>Bolivia</option>
+              <option>Bosnia and Herzegovina</option>
+              <option>Botswana</option>
+              <option>Brazil</option>
+              <option>Brunei</option>
+              <option>Bulgaria</option>
+              <option>Burkina Faso</option>
+              <option>Burundi</option>
+              <option>Cabo Verde</option>
+              <option>Cambodia</option>
+              <option>Cameroon</option>
+              <option>Canada</option>
+              <option>Central African Republic</option>
+              <option>Chad</option>
+              <option>Chile</option>
+              <option>China</option>
+              <option>Colombia</option>
+              <option>Comoros</option>
+              <option>Congo</option>
+              <option>Costa Rica</option>
+              <option>Côte d'Ivoire</option>
+              <option>Croatia</option>
+              <option>Cuba</option>
+              <option>Curacao</option>
+              <option>Cyprus</option>
+              <option>Czechia</option>
+              <option>Democratic Republic of the Congo</option>
+              <option>Denmark</option>
+              <option>Djibouti</option>
+              <option>Dominica</option>
+              <option>Dominican Republic</option>
+              <option>Ecuador</option>
+              <option>Egypt</option>
+              <option>El Salvador</option>
+              <option>Equatorial Guinea</option>
+              <option>Eritrea</option>
+              <option>Estonia</option>
+              <option>Eswatini</option>
+              <option>Ethiopia</option>
+              <option>Fiji</option>
+              <option>Finland</option>
+              <option>France</option>
+              <option>French Guiana</option>
+              <option>Gabon</option>
+              <option>Gambia</option>
+              <option>Georgia</option>
+              <option>Germany</option>
+              <option>Ghana</option>
+              <option>Greece</option>
+              <option>Greenland</option>
+              <option>Grenada</option>
+              <option>Guadeloupe</option>
+              <option>Guatemala</option>
+              <option>Guinea</option>
+              <option>Guinea-Bissau</option>
+              <option>Guyana</option>
+              <option>Haiti</option>
+              <option>Honduras</option>
+              <option>Hong Kong SAR China</option>
+              <option>Hungary</option>
+              <option>Iceland</option>
+              <option>India</option>
+              <option>Indonesia</option>
+              <option>Iran</option>
+              <option>Iraq</option>
+              <option>Ireland</option>
+              <option>Isle of Man</option>
+              <option>Israel</option>
+              <option>Italy</option>
+              <option>Jamaica</option>
+              <option>Japan</option>
+              <option>Jordan</option>
+              <option>Kazakhstan</option>
+              <option>Kenya</option>
+              <option>Kiribati</option>
+              <option>Kosovo</option>
+              <option>Kuwait</option>
+              <option>Kyrgyzstan</option>
+              <option>Laos</option>
+              <option>Latvia</option>
+              <option>Lebanon</option>
+              <option>Lesotho</option>
+              <option>Liberia</option>
+              <option>Libya</option>
+              <option>Liechtenstein</option>
+              <option>Lithuania</option>
+              <option>Luxembourg</option>
+              <option>Macao SAR China</option>
+              <option>Madagascar</option>
+              <option>Malawi</option>
+              <option>Malaysia</option>
+              <option>Maldives</option>
+              <option>Mali</option>
+              <option>Malta</option>
+              <option>Marshall Islands</option>
+              <option>Martinique</option>
+              <option>Mauritania</option>
+              <option>Mauritius</option>
+              <option>Mayotte</option>
+              <option>Mexico</option>
+              <option>Micronesia</option>
+              <option>Moldova</option>
+              <option>Monaco</option>
+              <option>Mongolia</option>
+              <option>Montenegro</option>
+              <option>Montserrat</option>
+              <option>Morocco</option>
+              <option>Mozambique</option>
+              <option>Myanmar</option>
+              <option>Namibia</option>
+              <option>Nauru</option>
+              <option>Nepal</option>
+              <option>Netherlands</option>
+              <option>New Caledonia</option>
+              <option>New Zealand</option>
+              <option>Nicaragua</option>
+              <option>Niger</option>
+              <option>Nigeria</option>
+              <option>Niue</option>
+              <option>North Korea</option>
+              <option>North Macedonia</option>
+              <option>Northern Mariana Islands</option>
+              <option>Norway</option>
+              <option>Oman</option>
+              <option>Pakistan</option>
+              <option>Palau</option>
+              <option>Palestine</option>
+              <option>Panama</option>
+              <option>Papua New Guinea</option>
+              <option>Paraguay</option>
+              <option>Peru</option>
+              <option>Philippines</option>
+              <option>Poland</option>
+              <option>Portugal</option>
+              <option>Puerto Rico</option>
+              <option>Qatar</option>
+              <option>Réunion</option>
+              <option>Romania</option>
+              <option>Russia</option>
+              <option>Rwanda</option>
+              <option>Saint Barthélemy</option>
+              <option>Saint Kitts and Nevis</option>
+              <option>Saint Lucia</option>
+              <option>Saint Martin</option>
+              <option>Saint Vincent and the Grenadines</option>
+              <option>Samoa</option>
+              <option>San Marino</option>
+              <option>Sao Tome and Principe</option>
+              <option>Saudi Arabia</option>
+              <option>Senegal</option>
+              <option>Serbia</option>
+              <option>Seychelles</option>
+              <option>Sierra Leone</option>
+              <option>Singapore</option>
+              <option>Sint Maarten</option>
+              <option>Slovakia</option>
+              <option>Slovenia</option>
+              <option>Solomon Islands</option>
+              <option>Somalia</option>
+              <option>South Africa</option>
+              <option>South Korea</option>
+              <option>South Sudan</option>
+              <option>Spain</option>
+              <option>Sri Lanka</option>
+              <option>Sudan</option>
+              <option>Suriname</option>
+              <option>Svalbard and Jan Mayen</option>
+              <option>Sweden</option>
+              <option>Switzerland</option>
+              <option>Syria</option>
+              <option>Taiwan</option>
+              <option>Tajikistan</option>
+              <option>Tanzania</option>
+              <option>Thailand</option>
+              <option>Timor-Leste</option>
+              <option>Togo</option>
+              <option>Tonga</option>
+              <option>Trinidad and Tobago</option>
+              <option>Tunisia</option>
+              <option>Turkey</option>
+              <option>Turkmenistan</option>
+              <option>Turks and Caicos Islands</option>
+              <option>Tuvalu</option>
+              <option>U.S. Virgin Islands</option>
+              <option>Uganda</option>
+              <option>Ukraine</option>
+              <option>United Arab Emirates</option>
+              <option>United Kingdom</option>
+              <option>United States</option>
+              <option>Uruguay</option>
+              <option>Uzbekistan</option>
+              <option>Vanuatu</option>
+              <option>Vatican City</option>
+              <option>Venezuela</option>
+              <option>Vietnam</option>
+              <option>Wallis and Futuna</option>
+              <option>Western Sahara</option>
+              <option>Yemen</option>
+              <option>Zambia</option>
+              <option>Zimbabwe</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Suburb/City</label>
+            <input id="orderSuburb" class="form-control" type="text" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Postcode</label>
+            <input id="orderPostcode" class="form-control" type="text" />
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center">
+          <div id="orderError" class="text-danger small"></div>
+          <div class="small">
+            <strong>Total: <span id="orderTotal">0</span> hour(s)</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer border-0">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-dismiss="modal"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          id="orderSubmitBtn"
+          class="btn btn-primary"
+          disabled
+        >
+          Submit Order
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="py-4 bg-light text-center">
+  <div class="container">
+    <span class="text-muted"
+      >This website is <a href="{{ site.github }}">Open source!</a></span
+    >
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/market.js') }}"></script>
+{% endblock %}
