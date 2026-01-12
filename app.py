@@ -224,7 +224,31 @@ def admin():
     if not user["is_admin"]:
         return redirect(url_for("unauthorized"))
 
-    return render_template("admin.html")
+    return render_template("admin/overview.html")
+
+# GET /admin/rewards
+@app.route("/admin/rewards")
+def endpoint_admin_rewards():
+    user = get_current_user()
+    if not user:
+        return redirect(url_for("login"))
+
+    if not user["is_admin"]:
+        return redirect(url_for("unauthorized"))
+
+    return render_template("admin/rewards.html")
+
+# GET /admin/faqs
+@app.route("/admin/faqs")
+def endpoint_admin_faqs():
+    user = get_current_user()
+    if not user:
+        return redirect(url_for("login"))
+
+    if not user["is_admin"]:
+        return redirect(url_for("unauthorized"))
+
+    return render_template("admin/faqs.html")
 
 
 # GET /reviewer

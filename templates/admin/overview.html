@@ -1,0 +1,69 @@
+{% extends "base.html" %} {% block title %}Admin - {{ site.home.title }}{%
+endblock %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/dashboard.css') }}"
+/>
+<style>
+  .sidebar {
+    min-height: calc(100vh - 56px);
+    overflow-y: auto;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 2rem;
+  }
+</style>
+{% endblock %} {% block hackclub_flag %} {% endblock %} {% block navbar_balance
+%}{% endblock %} {% block content %}
+<div class="container-fluid">
+  <div class="row">
+    {# SIDEBAR #}
+    <nav
+      id="adminSidebar"
+      class="col-12 col-md-3 col-lg-2 bg-light sidebar collapse d-md-block"
+    >
+      <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/admin"
+              >Overview</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/faqs">FAQs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/rewards">Rewards</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    {# CONTENT #}
+    <main class="col">
+      <div class="container py-4">
+        {# IF ON MOBILE SHOW A MENU TO SHOW THE OFFCANVAS #}
+        <button
+          class="btn btn-outline-secondary d-md-none mb-3"
+          data-bs-toggle="collapse"
+          data-bs-target="#adminSidebar"
+          aria-controls="adminSidebar"
+          aria-expanded="false"
+        >
+          ☰ Menu
+        </button>
+      </div>
+    </main>
+  </div>
+</div>
+
+{# FOOTER #}
+<footer class="py-4 bg-light text-center mt-auto">
+  <div class="container">
+    <span class="text-muted"
+      >This website is <a href="{{ site.github }}">Open source!</a></span
+    >
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}
