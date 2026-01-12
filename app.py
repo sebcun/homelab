@@ -204,6 +204,16 @@ def dashboard():
     return render_template("dashboard.html")
 
 
+# GET /market
+@app.route("/market")
+def market():
+    user = get_current_user()
+    if not user:
+        return redirect(url_for("login"))
+
+    return render_template("market.html")
+
+
 # GET /admin
 @app.route("/admin")
 def admin():

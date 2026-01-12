@@ -101,6 +101,10 @@ def project_shipped(project):
                 }
             ],
         },
+        {
+            "type": "context",
+            "elements": [{"type": "mrkdwn", "text": "_it can take up to a week for your project to be paid out, please be patient, you will receive a message here once it is done_"}],
+        },
     ]
 
     send_dm(project["slack_id"], blocks)
