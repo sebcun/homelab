@@ -412,11 +412,12 @@ def create_order(user_id: int, reward_id: int, quantity: int, name: str, email: 
         )
         return c.lastrowid
 
-
 def get_orders_for_user(user_id: int):
     with get_db_connection() as conn:
         c = conn.cursor()
-        c.execute("SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC", (user_id,))
+        c.execute("""SELECT o.*, u.email as user_email, u.nickname as user_nickname, u.slack_id as user_slack_id
+                     FROM orders o JOIN users u ON o.user_id = u.id
+                     WHERE o.user_id = ? ORDER BY o.created_at DESC""", (user_id,))
         rows = [dict(r) for r in c.fetchall()]
         for r in rows:
             try:
@@ -425,12 +426,11 @@ def get_orders_for_user(user_id: int):
                 r["address"] = {}
         return rows
 
-
 def get_all_orders():
     with get_db_connection() as conn:
         c = conn.cursor()
-        c.execute("""SELECT o.*, u.email as user_email, u.nickname as user_nickname FROM orders o 
-                     JOIN users u ON o.user_id = u.id ORDER BY o.created_at DESC""")
+        c.execute("""SELECT o.*, u.email as user_email, u.nickname as user_nickname, u.slack_id as user_slack_id
+                     FROM orders o JOIN users u ON o.user_id = u.id ORDER BY o.created_at DESC""")
         rows = [dict(r) for r in c.fetchall()]
         for r in rows:
             try:

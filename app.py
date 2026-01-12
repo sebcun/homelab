@@ -250,6 +250,18 @@ def endpoint_admin_faqs():
 
     return render_template("admin/faqs.html")
 
+# GET /admin/orders
+@app.route("/admin/orders")
+def endpoint_admin_orders():
+    user = get_current_user()
+    if not user:
+        return redirect(url_for("login"))
+
+    if not user["is_admin"]:
+        return redirect(url_for("unauthorized"))
+
+    return render_template("admin/orders.html")
+
 
 # GET /reviewer
 @app.route("/reviewer")
